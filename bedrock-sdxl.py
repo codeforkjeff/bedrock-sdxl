@@ -10,6 +10,8 @@ import pprint
 import re
 import shutil
 import sys
+from types import SimpleNamespace
+from typing import Dict, List
 import uuid
 
 import boto3
@@ -18,7 +20,7 @@ MODEL_ID = "stability.stable-diffusion-xl"
 SEED_MAX = 4294967295
 
 
-def normalize_str(s):
+def normalize_str(s: str) -> str:
     # strip punctuation and quotes
     s = re.sub(r"[,\.'\"]", "", s)
     # replace remaining non-alphanumerics with underscores
@@ -31,15 +33,18 @@ def normalize_str(s):
     return s
 
 
-def pairs(_list):
-    return list(zip(*(iter(_list),) * 2))
-
-
-def normalize_prompts(prompts):
+def normalize_prompts(prompts: List) -> str:
     """
     normalized prompts input to a filename-appropriate str
     """
     return "_".join([normalize_str(prompt['text']) for prompt in prompts])
+
+
+def pairs(_list: List) -> List[List]:
+    """
+    transforms a flat list into a list of lists of pairs
+    """
+    return list(zip(*(iter(_list),) * 2))
 
 
 def get_stable_seed() -> int:
@@ -49,7 +54,7 @@ def get_stable_seed() -> int:
     return uuid.getnode() % SEED_MAX
 
 
-def get_body_defaults():
+def get_body_defaults() -> Dict:
     return {
         "seed": get_stable_seed(),
     }
@@ -137,7 +142,7 @@ def parse_args():
     return args
 
 
-def parse_prompt(prompts):
+def parse_prompt(prompts: List) -> List[Dict]:
     """
     parse a list of prompts provided as input into dicts
     expected by API
@@ -148,7 +153,7 @@ def parse_prompt(prompts):
     return [{"text": pair[0], "weight": float(pair[1])} for pair in pairs(_prompts)]
 
 
-def generate_image(args: dict):
+def generate_image(args: SimpleNamespace):
     runtime = create_runtime(args.aws_profile)
 
     ####
