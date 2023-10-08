@@ -71,7 +71,7 @@ $ ./bedrock-sdxl.py -p "a swimming duck" 1.0 "a swimming elephant" 0.7 "orange s
 Setting multiple parameters
 
 ```console
-$ ./bedrock-sdxl.py -p "a swimming duck" 1.0 "a swimming elephant" 0.7 "orange sky" -1.0 -b steps 75 seed 666 style_present photographic
+$ ./bedrock-sdxl.py -p "a swimming duck" 1.0 "a swimming elephant" 0.7 "orange sky" -1.0 -b steps 75 seed 666 style_preset photographic
 ```
 
 To (re)generate an image from parameters stored in a .json file
