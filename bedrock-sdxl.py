@@ -60,21 +60,6 @@ def get_body_defaults() -> Dict:
     }
 
 
-def create_body(body: dict):
-    """
-    a body with some desirable/reasonable defaults
-
-    style_preset values:
-    3d-model analog-film anime cinematic comic-book digital-art enhance
-    fantasy-art isometric line-art low-poly modeling-compound neon-punk
-    origami photographic pixel-art tile-texture
-    """
-    return {
-        **get_body_defaults(),
-        **body
-    }
-
-
 def create_runtime(profile_name):
     session = boto3.Session(profile_name=profile_name)
     return session.client(
@@ -174,10 +159,11 @@ def generate_image(args: SimpleNamespace):
 
         # https://platform.stability.ai/docs/api-reference#tag/v1generation/operation/textToImage
 
-        body = create_body({
+        body = {
+            **get_body_defaults(),
             **body_params,
             "text_prompts": prompts,
-            })
+            }
 
     if args.debug:
         pprint.pprint(body)
