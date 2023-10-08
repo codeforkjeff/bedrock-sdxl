@@ -44,8 +44,8 @@ your computer if `xdg-open` is available.
 
 ```console
 $ ./bedrock-sdxl.py -p "a swimming duck"
-writing output/a_duck_eating_a_sandwich_888eceb0.json
-writing output/a_duck_eating_a_sandwich_888eceb0.png
+writing output/a_swimming_duck_c9ac9897.json
+writing output/a_swimming_duck_c9ac9897.png
 ```
 
 Text prompt with multiple weights
@@ -71,7 +71,7 @@ $ ./bedrock-sdxl.py -p "a swimming duck" 1.0 "a swimming elephant" 0.7 "orange s
 To (re)generate an image from parameters stored in a .json file
 
 ```console
-$ ./bedrock-sdxl.py -r output/a_duck_eating_a_sandwich_888eceb0.json
+$ ./bedrock-sdxl.py -r output/a_swimming_duck_c9ac9897.json
 ```
 
 To see all the options
