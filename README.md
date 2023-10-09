@@ -38,9 +38,11 @@ pip install -r requirements.txt
 
 ## Usage
 
-Single text prompt. A default seed is calculated using your machine ID,
-so the hash in your filename will be different. The image will open on
-your computer if `xdg-open` is available.
+Single text prompt. The truncated sha hash at the end of the filename
+is calculated on the set of request parameters, including a random
+seed based on your machine ID. So the hash in your filename
+will be different. The image will open on your computer if `xdg-open`
+is available.
 
 ```console
 $ ./bedrock-sdxl.py -p "a swimming duck"
