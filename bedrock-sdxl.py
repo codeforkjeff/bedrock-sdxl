@@ -186,23 +186,29 @@ def generate_image(args: SimpleNamespace):
     ####
     # write the file
 
-    body_hash = hashlib.sha256(body_serialized.encode('utf-8')).hexdigest()[0:8]
-    filename_base = f"{normalize_prompts(body['text_prompts'])}_{body_hash}"
-    filename_json = os.path.join(args.output_dir, f"{filename_base}.json")
-    filename_img = os.path.join(args.output_dir, f"{filename_base}.png")
+    artifacts = response_body["artifacts"]
+    # API says you can request up to 10 samples but apparently the Bedrock
+    # version only allows a max of 1, so this loop is kind of moot
+    for i, artifact in enumerate(artifacts):
+        suffix = f"_{i}" if i > 0 else ""
 
-    if not args.request:
-        print(f"writing {filename_json}")
-        with open(filename_json, "w") as f:
-            f.write(body_serialized)
+        body_hash = hashlib.sha256(body_serialized.encode('utf-8')).hexdigest()[0:8]
+        filename_base = f"{normalize_prompts(body['text_prompts'])}{suffix}_{body_hash}"
+        filename_json = os.path.join(args.output_dir, f"{filename_base}.json")
+        filename_img = os.path.join(args.output_dir, f"{filename_base}.png")
 
-    base_64_img_str = response_body["artifacts"][0].get("base64")
+        if not args.request:
+            print(f"writing {filename_json}")
+            with open(filename_json, "w") as f:
+                f.write(body_serialized)
 
-    print(f"writing {filename_img}")
-    write_b64_str(base_64_img_str, filename_img)
+        base_64_img_str = artifact.get("base64")
 
-    if shutil.which("xdg-open"):
-        os.system(f"xdg-open {filename_img}")
+        print(f"writing {filename_img}")
+        write_b64_str(base_64_img_str, filename_img)
+
+        if shutil.which("xdg-open"):
+            os.system(f"xdg-open {filename_img}")
 
 
 if __name__ == '__main__':
